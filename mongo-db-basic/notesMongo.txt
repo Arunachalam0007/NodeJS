@@ -1,0 +1,145 @@
+
+
+Mongo DB:
+
+install:
+
+!. create dir and bin after use this command mongod.exe --dbpath G:/mongo-data
+
+!!. After getting 27017 port number we have to open new cmd using this dir c:/programfiles/monogdb/server/3.6/bin
+
+!!!. after use that dir in 2nd cmd we have to use mongo.exe
+
+!v. then we create a record using db.Todos.insert({text:"create new node course"})...  we get 1 record is inserted in the cmd
+
+v. to find record. db.Todos.find() we will get the id with text record
+
+ROBO MONGO: (CONNECTION)
+
+This is goovy for mongo db.
+This will connect your local database as well as real database 
+We can see the record inside the robo mongo
+
+
+SQL vs NoSQL:
+
+!. Sql is a structured database. it's format of Table
+!!. NoSql is non structured database. it's formate of collection (i.e) object keys and values
+
+Basic connection node with mongo
+
+https://github.com/mongodb/node-mongodb-native use this url...
+
+
+Step 1:
+
+//mongo client is used to connect the mongoserver
+const MongoClient = require('mongodb').MongoClient;
+
+//mongclient to connect or create the db 
+MongoClient.connect('mongodb://localhost:27017/TodoAPP', (err, db) => {
+    if (err) {
+        console.log('unable to connect the mongoDB server');
+    }
+    console.log('connected to mongoDB server');
+    db.close();
+}); //it takes two arguments 1st is url like amazonwebserver url or localhost or heroku and 2nd is callback
+
+
+Step 2: 
+
+In MONGO version 3 have three changes (i.e): 
+!. 2nd argument is db into client 
+!!. add new line is var db=client.db('myDB1'); 
+!!!. client.close();
+
+result.ops is an array of all the doucments that got inserted
+e.g: result.ops[0]._id we ill get the id of 1st array
+
+E.g: 
+
+//mongo client is used to connect the mongoserver
+const MongoClient = require('mongodb').MongoClient;
+
+//mongclient to connect the db 
+MongoClient.connect('mongodb://localhost:27017/TodoAPP', (err, client) => {
+    if (err) {
+        console.log('unable to connect the mongoDB server');
+    }
+    console.log('connected to mongoDB server');
+
+    //getting the db from client db
+    var db = client.db('TodoAPP');
+
+    db.collection('Users').insertOne({
+        name: 'Arunsha',
+        age: 22,
+        location: 'chennai'
+    }, (err, result) => {
+        if (err) {
+            console.log('unable to insert the Users ' + err);
+        }
+        console.log(JSON.stringify(result.ops, undefined, 2));
+    });
+
+    client.close();
+}); //it takes two arguments 1st is url like amazonwebserver url or localhost or heroku and 2nd is callback
+
+
+
+//destructure type of ES6
+
+
+const { MongoClient, ObjectID } = require('mongodb');
+var obj = new ObjectID();
+console.log(obj);
+
+
+
+Find operation in MONGO DB:
+
+//mongo client is used to connect the mongoserver
+//destructure type of ES6
+const { MongoClient, ObjectID } = require('mongodb');
+var obj = new ObjectID();
+console.log(obj);
+
+//mongclient to connect the db 
+MongoClient.connect('mongodb://localhost:27017/TodoAPP', (err, client) => {
+    if (err) {
+        console.log('unable to connect the mongoDB server');
+    }
+    console.log('connected to mongoDB server');
+
+    //getting the db from client db
+    var db = client.db('TodoAPP');
+
+    //find all using to array
+
+    // db.collection('Find').find().toArray().then((res) => {
+    //     console.log("FIND Collection loaded");
+    //     console.log(JSON.stringify(res, undefined, 2));
+    // }, (err) => {
+    //     console.log('unabe to fetch Find Collections', err);
+    // });
+
+    // find based on id using toArray
+
+    db.collection('Find').find({ _id: 7 }).toArray().then((res) => {
+        console.log("FIND Collection loaded");
+        console.log(JSON.stringify(res, undefined, 2));
+    }, (err) => {
+        console.log('unabe to fetch Find Collections', err);
+    });
+
+    db.collection('Find').find().count().then((res) => {
+        console.log(`Find Collection count is: ${res}`);
+    }, (err) => {
+        console.log("unable to fetch find collections", err);
+    });
+
+    client.close();
+}); //it takes two arguments 1st is url like amazonwebserver url or localhost or heroku and 2nd is callback
+
+
+
